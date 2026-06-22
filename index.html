@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Elite Keto / LCHF Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #020617;
+      --card: #020617;
+      --card2: #020b1f;
+      --accent: #22c55e;
+      --accent-soft: rgba(34,197,94,.18);
+      --warn: #f97316;
+      --danger: #ef4444;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; padding:1rem;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: radial-gradient(circle at top, #022c22 0, #020617 50%, #020617 100%);
+      color:var(--text);
+    }
+    h1 { font-size:1.45rem; margin:0 0 .2rem; }
+    h2 { font-size:1rem; margin:.1rem 0 .5rem; }
+    .grid { display:grid; grid-template-columns:1fr; gap:1rem; }
+    @media (min-width:900px) {
+      .grid { grid-template-columns:1.2fr 1.4fr; }
+      .grid-wide { grid-column:1 / -1; }
+    }
+    .card {
+      background: radial-gradient(circle at top left,#020b1f 0,#020617 55%);
+      border-radius:14px;
+      padding:.85rem .9rem 1rem;
+      box-shadow:0 12px 35px rgba(0,0,0,.65);
+      border:1px solid rgba(148,163,184,.15);
+    }
+    .row { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; }
+    .pill {
+      display:inline-flex; align-items:center; gap:.3rem;
+      padding:.15rem .6rem; border-radius:999px;
+      background:rgba(15,23,42,.9); color:var(--muted);
+      font-size:.72rem;
+    }
+    .pill-dot { width:7px; height:7px; border-radius:999px; background:var(--accent); }
+    .pill-warn .pill-dot { background:var(--warn); }
+
+    .metric { display:flex; flex-direction:column; margin-right:1rem; margin-top:.3rem; }
+    .metric-label { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+    .metric-value { font-size:1.1rem; margin-top:.12rem; }
+    .metric-sub { font-size:.75rem; color:var(--muted); }
+
+    label { font-size:.75rem; color:var(--muted); display:block; margin-bottom:.1rem; }
+    input, textarea, select {
+      width:100%; padding:.35rem .45rem; border-radius:8px;
+      border:1px solid rgba(148,163,184,.35);
+      background:#020617; color:var(--text); font-size:.8rem;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline:1px solid var(--accent); border-color:var(--accent);
+    }
+    textarea { min-height:52px; resize:vertical; }
+    .row-inputs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.5rem; }
+    @media (min-width:800px) {
+      .row-inputs { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    }
+    button {
+      border:none; border-radius:999px;
+      padding:.4rem .9rem; margin-top:.35rem; margin-right:.35rem;
+      font-size:.8rem; cursor:pointer;
+      background:linear-gradient(to right,#22c55e,#16a34a); color:white;
+    }
+    button.secondary {
+      background:linear-gradient(to right,#1f2937,#020617);
+    }
+    button.danger {
+      background:linear-gradient(to right,#b91c1c,#7f1d1d);
+    }
+    button.small { padding:.25rem .6rem; font-size:.72rem; }
+    button:disabled { opacity:.5; cursor:default; }
+    .help { font-size:.72rem; color:var(--muted); margin-top:.25rem; }
+
+    canvas { max-width:100%; }
+
+    table { width:100%; border-collapse:collapse; font-size:.78rem; margin-top:.4rem; }
+    th, td { padding:.28rem .35rem; border-bottom:1px solid rgba(30,64,175,.3); text-align:left; }
+    th { font-weight:500; color:var(--muted); background:rgba(15,23,42,.85); position:sticky; top:0; }
+    tr:nth-child(even) { background:rgba(15,23,42,.7); }
+
+    .badge {
+      padding:.1rem .45rem; border-radius:999px; font-size:.7rem;
+      background:rgba(15,23,42,.8); color:var(--muted);
+    }
+    .badge-good { background:var(--accent-soft); color:#bbf7d0; }
+    .badge-bad { background:rgba(248,113,113,.15); color:#fecaca; }
+    .photo-thumb {
+      width:38px; height:38px; border-radius:8px; object-fit:cover;
+      border:1px solid rgba(148,163,184,.4);
+    }
+
+    .flex-between { display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
+    .chip {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:.15rem .55rem; border-radius:999px;
+      font-size:.72rem; background:rgba(15,23,42,.95); color:var(--muted);
+      border:1px solid rgba(148,163,184,.25);
+    }
+    .chip strong { color:var(--accent); }
+    .list-small { font-size:.75rem; margin-top:.3rem; color:var(--muted); }
+    .food-row { display:flex; justify-content:space-between; align-items:center; padding:.2rem 0; border-bottom:1px dashed rgba(30,64,175,.4); }
+    .food-row span { font-size:.8rem; }
+    .food-row:last-child { border-bottom:none; }
+    .scroll-y { max-height:230px; overflow-y:auto; }
+  </style>
+</head>
+<body>
+  <h1>Elite Keto / LCHF Tracker</h1>
+  <div class="row">
+    <div class="pill">
+      <span class="pill-dot"></span> Strict keto limit: <strong>20 g net carbs</strong>
+    </div>
+    <div class="pill pill-warn">
+      <span class="pill-dot"></span> Data stays in this browser (localStorage)
+    </div>
+  </div>
+
+  <!-- Backup & restore -->
+  <div class="card" style="margin-top:.8rem; margin-bottom:.6rem;">
+    <div class="flex-between">
+      <div>
+        <h2>Backup & restore</h2>
+        <p class="help">
+          Download a JSON backup of all logs + foods, or restore from a backup if you clear your browser.
+        </p>
+      </div>
+      <div>
+        <button id="btnBackup" class="secondary small">Download backup</button>
+        <button id="btnRestore" class="secondary small">Restore backup</button>
+        <input id="backupFile" type="file" accept="application/json" style="display:none;" />
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Left: Diary & food search -->
+    <div class="card">
+      <h2>Daily diary</h2>
+      <div class="row" style="margin-bottom:.4rem;">
+        <div style="flex:1;">
+          <label for="date">Date</label>
+          <input id="date" type="date" />
+        </div>
+        <div style="flex:1;">
+          <label for="weight">Weight (kg)</label>
+          <input id="weight" type="number" step="0.1" min="0" />
+        </div>
+      </div>
+
+      <div class="chip">
+        Today’s macros:
+        &nbsp;<span id="todaySummary">0 kcal • 0 g net • 0 g P • 0 g F</span>
+      </div>
+      <div class="list-small">
+        <span id="ketoFlag" class="badge">Keto status: –</span>
+      </div>
+
+      <h2 style="margin-top:.7rem;">Add food</h2>
+      <div class="row" style="margin-bottom:.3rem;">
+        <div style="flex:1;">
+          <label for="foodSearch">Search saved foods</label>
+          <input id="foodSearch" type="text" placeholder="e.g. eggs, butter, Sahara yogurt" />
+        </div>
+        <div style="width:110px;">
+          <label for="meal">Meal</label>
+          <select id="meal">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+          </select>
+        </div>
+      </div>
+      <div id="searchResults" class="scroll-y"></div>
+
+      <h2 style="margin-top:.7rem;">Diary foods for this day</h2>
+      <div id="diaryList" class="scroll-y"></div>
+
+      <div style="margin-top:.7rem;">
+        <label for="notes">Notes / events</label>
+        <textarea id="notes" placeholder="Elite breakfast, Mum’s veg, migraine, period, fasting…"></textarea>
+      </div>
+      <div class="row" style="margin-top:.5rem;">
+        <div style="flex:1;">
+          <label for="photo">Progress photo URL (optional)</label>
+          <input id="photo" type="url" placeholder="Paste image link if you have one" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:.6rem;">
+        <button id="btnSaveDay">Save / update day</button>
+        <button class="secondary" id="btnToday">Use today</button>
+        <button class="danger" id="btnClearDay">Clear this day</button>
+      </div>
+      <p class="help">
+        Workflow: pick date → add foods from search → adjust weight → save day.
+      </p>
+    </div>
+
+    <!-- Right: Food database -->
+    <div class="card">
+      <div class="flex-between">
+        <h2>Food database (local)</h2>
+        <button class="secondary small" id="btnResetFoods">Reset to defaults</button>
+      </div>
+      <p class="help">
+        Saved foods live only in this browser. Add your Elite staples once, then reuse forever.
+      </p>
+      <div class="row-inputs">
+        <div>
+          <label for="foodName">Food name</label>
+          <input id="foodName" type="text" placeholder="e.g. Eggs & butter" />
+        </div>
+        <div>
+          <label for="foodServing">Serving description</label>
+          <input id="foodServing" type="text" placeholder="e.g. 3 eggs + 15 g butter" />
+        </div>
+        <div>
+          <label for="foodCalories">Calories</label>
+          <input id="foodCalories" type="number" step="1" min="0" />
+        </div>
+        <div>
+          <label for="foodCarbs">Net carbs (g)</label>
+          <input id="foodCarbs" type="number" step="0.1" min="0" />
+        </div>
+        <div>
+          <label for="foodProtein">Protein (g)</label>
+          <input id="foodProtein" type="number" step="0.1" min="0" />
+        </div>
+        <div>
+          <label for="foodFat">Fat (g)</label>
+          <input id="foodFat" type="number" step="0.1" min="0" />
+        </div>
+      </div>
+      <button id="btnAddFood">Add / update food</button>
+      <p class="help">
+        Example: “Elite breakfast (3 eggs + butter)” with your usual macros. You can always edit later.
+      </p>
+
+      <h2 style="margin-top:.6rem;">Saved foods</h2>
+      <div id="foodList" class="scroll-y"></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="card grid-wide">
+      <h2>Weight trend</h2>
+      <canvas id="weightChart" height="120"></canvas>
+    </div>
+
+    <div class="card grid-wide">
+      <h2>Net carbs vs 20 g keto limit</h2>
+      <canvas id="carbChart" height="120"></canvas>
+    </div>
+
+    <!-- Recent days table -->
+    <div class="card grid-wide" style="max-height:260px; overflow:auto;">
+      <h2>Recent days</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Weight</th>
+            <th>Net carbs</th>
+            <th>Keto?</th>
+            <th>Calories</th>
+            <th>Photo</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const STORAGE_LOG = "eliteKetoDiary_v1";
+    const STORAGE_FOOD = "eliteKetoFoods_v1";
+    const KETO_LIMIT = 20;
+
+    const defaultFoods = [
+      {
+        id: "elite_breakfast",
+        name: "Elite breakfast (3 eggs + butter)",
+        serving: "3 eggs + 20 g butter",
+        calories: 450,
+        carbs: 1.0,
+        protein: 24.0,
+        fat: 38.0
+      },
+      {
+        id: "work_default",
+        name: "Work default (meat + veg, no rice)",
+        serving: "Fish/chicken + veg, no rice",
+        calories: 500,
+        carbs: 6.0,
+        protein: 35.0,
+        fat: 35.0
+      },
+      {
+        id: "mums_veggies",
+        name: "Mum’s veggie + meat dinner",
+        serving: "Hei'mu'er, veg, pork/chicken",
+        calories: 550,
+        carbs: 8.0,
+        protein: 28.0,
+        fat: 42.0
+      },
+      {
+        id: "sahara_yogurt",
+        name: "Sahara yogurt",
+        serving: "1 cup",
+        calories: 150,
+        carbs: 6.0,
+        protein: 8.0,
+        fat: 10.0
+      }
+    ];
+
+    function loadFoods() {
+      try {
+        const raw = localStorage.getItem(STORAGE_FOOD);
+        if (!raw) return [...defaultFoods];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || !parsed.length) return [...defaultFoods];
+        return parsed;
+      } catch {
+        return [...defaultFoods];
+      }
+    }
+
+    function saveFoods(foods) {
+      localStorage.setItem(STORAGE_FOOD, JSON.stringify(foods));
+    }
+
+    function loadDiary() {
+      try {
+        const raw = localStorage.getItem(STORAGE_LOG);
+        if (!raw) return {};
+        return JSON.parse(raw);
+      } catch {
+        return {};
+      }
+    }
+
+    function saveDiary(diary) {
+      localStorage.setItem(STORAGE_LOG, JSON.stringify(diary));
+    }
+
+    function formatDateHuman(d) {
+      if (!d) return "";
+      return new Date(d + "T00:00:00").toLocaleDateString();
+    }
+
+    let foods = loadFoods();
+    let diary = loadDiary();
+    let weightChart, carbChart;
+
+    const dateInput = document.getElementById("date");
+    const weightInput = document.getElementById("weight");
+    const notesInput = document.getElementById("notes");
+    const photoInput = document.getElementById("photo");
+    const todaySummary = document.getElementById("todaySummary");
+    const ketoFlag = document.getElementById("ketoFlag");
+    const diaryList = document.getElementById("diaryList");
+    const tableBody = document.getElementById("tableBody");
+
+    const foodSearch = document.getElementById("foodSearch");
+    const mealSelect = document.getElementById("meal");
+    const searchResults = document.getElementById("searchResults");
+    const foodList = document.getElementById("foodList");
+
+    const foodName = document.getElementById("foodName");
+    const foodServing = document.getElementById("foodServing");
+    const foodCalories = document.getElementById("foodCalories");
+    const foodCarbs = document.getElementById("foodCarbs");
+    const foodProtein = document.getElementById("foodProtein");
+    const foodFat = document.getElementById("foodFat");
+
+    const btnAddFood = document.getElementById("btnAddFood");
+    const btnResetFoods = document.getElementById("btnResetFoods");
+    const btnSaveDay = document.getElementById("btnSaveDay");
+    const btnToday = document.getElementById("btnToday");
+    const btnClearDay = document.getElementById("btnClearDay");
+
+    const btnBackup = document.getElementById("btnBackup");
+    const btnRestore = document.getElementById("btnRestore");
+    const backupFile = document.getElementById("backupFile");
+
+    function getTodayISO() {
+      return new Date().toISOString().slice(0,10);
+    }
+
+    function ensureDay(dateStr) {
+      if (!diary[dateStr]) {
+        diary[dateStr] = { weight:null, notes:"", photo:"", entries:[] };
+      }
+      return diary[dateStr];
+    }
+
+    function renderFoodList() {
+      foodList.innerHTML = "";
+      if (!foods.length) {
+        foodList.innerHTML = "<p class='help'>No foods yet. Add your staples on the left.</p>";
+        return;
+      }
+      foods.forEach(f => {
+        const div = document.createElement("div");
+        div.className = "food-row";
+        div.innerHTML = `
+          <span>${f.name} <span style="color:var(--muted);font-size:.7rem;">(${f.serving})</span></span>
+          <span style="color:var(--muted);font-size:.72rem;">
+            ${f.calories} kcal · ${f.carbs} g C · ${f.protein} g P · ${f.fat} g F
+          </span>
+        `;
+        div.onclick = () => {
+          foodName.value = f.name;
+          foodServing.value = f.serving;
+          foodCalories.value = f.calories;
+          foodCarbs.value = f.carbs;
+          foodProtein.value = f.protein;
+          foodFat.value = f.fat;
+        };
+        foodList.appendChild(div);
+      });
+    }
+
+    function addOrUpdateFood() {
+      const name = foodName.value.trim();
+      if (!name) return alert("Food name is required");
+      const serving = foodServing.value.trim() || "1 serving";
+      const calories = Number(foodCalories.value) || 0;
+      const carbs = Number(foodCarbs.value) || 0;
+      const protein = Number(foodProtein.value) || 0;
+      const fat = Number(foodFat.value) || 0;
+
+      const existing = foods.find(f => f.name.toLowerCase() === name.toLowerCase());
+      if (existing) {
+        existing.serving = serving;
+        existing.calories = calories;
+        existing.carbs = carbs;
+        existing.protein = protein;
+        existing.fat = fat;
+      } else {
+        foods.push({
+          id: "food_" + Date.now(),
+          name, serving, calories, carbs, protein, fat
+        });
+      }
+      saveFoods(foods);
+      renderFoodList();
+      renderSearch();
+    }
+
+    btnAddFood.onclick = addOrUpdateFood;
+    btnResetFoods.onclick = () => {
+      if (!confirm("Reset food database to defaults? This keeps your diary.")) return;
+      foods = [...defaultFoods];
+      saveFoods(foods);
+      renderFoodList();
+      renderSearch();
+    };
+
+    function searchFoods(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return foods.slice(0, 20);
+      return foods.filter(f => f.name.toLowerCase().includes(q)).slice(0, 20);
+    }
+
+    function renderSearch() {
+      const results = searchFoods(foodSearch.value);
+      searchResults.innerHTML = "";
+      if (!results.length) {
+        searchResults.innerHTML = "<p class='help'>No foods match. Add it in the food database.</p>";
+        return;
+      }
+      results.forEach(f => {
+        const row = document.createElement("div");
+        row.className = "food-row";
+        row.innerHTML = `
+          <span>${f.name} <span style="color:var(--muted);font-size:.7rem;">(${f.serving})</span></span>
+          <span style="color:var(--muted);font-size:.72rem;">
+            ${f.calories} kcal · ${f.carbs} C · ${f.protein} P · ${f.fat} F
+            <button class="small secondary" style="margin-left:.35rem;">Add</button>
+          </span>
+        `;
+        row.querySelector("button").onclick = (ev) => {
+          ev.stopPropagation();
+          addFoodToDiary(f);
+        };
+        searchResults.appendChild(row);
+      });
+    }
+
+    foodSearch.addEventListener("input", renderSearch);
+
+    function addFoodToDiary(food) {
+      const date = dateInput.value || getTodayISO();
+      dateInput.value = date;
+      const day = ensureDay(date);
+      const qty = 1;
+      day.entries.push({
+        id: "entry_" + Date.now(),
+        foodId: food.id,
+        name: food.name,
+        serving: food.serving,
+        calories: food.calories,
+        carbs: food.carbs,
+        protein: food.protein,
+        fat: food.fat,
+        qty,
+        meal: mealSelect.value
+      });
+      saveDiary(diary);
+      renderDiaryDay(date);
+      updateChartsAndTable();
+    }
+
+    function renderDiaryDay(date) {
+      const day = diary[date];
+      if (!day) {
+        diaryList.innerHTML = "<p class='help'>No foods logged for this day yet.</p>";
+        todaySummary.textContent = "0 kcal • 0 g net • 0 g P • 0 g F";
+        ketoFlag.textContent = "Keto status: –";
+        ketoFlag.className = "badge";
+        notesInput.value = "";
+        photoInput.value = "";
+        return;
+      }
+      notesInput.value = day.notes || "";
+      photoInput.value = day.photo || "";
+      weightInput.value = day.weight != null ? day.weight : "";
+
+      let totalCal = 0, totalC = 0, totalP = 0, totalF = 0;
+      diaryList.innerHTML = "";
+      if (!day.entries || !day.entries.length) {
+        diaryList.innerHTML = "<p class='help'>No foods logged yet. Add some from the search above.</p>";
+      } else {
+        day.entries.forEach((e, index) => {
+          totalCal += e.calories * e.qty;
+          totalC += e.carbs * e.qty;
+          totalP += e.protein * e.qty;
+          totalF += e.fat * e.qty;
+          const row = document.createElement("div");
+          row.className = "food-row";
+          row.innerHTML = `
+            <span>[${e.meal}] ${e.name} <span style="color:var(--muted);font-size:.7rem;">(${e.serving})</span></span>
+            <span style="color:var(--muted);font-size:.72rem;">
+              ${e.calories} kcal · ${e.carbs} C · ${e.protein} P · ${e.fat} F
+              <button class="small danger" data-index="${index}">✕</button>
+            </span>
+          `;
+          row.querySelector("button").onclick = (ev) => {
+            ev.stopPropagation();
+            day.entries.splice(index, 1);
+            saveDiary(diary);
+            renderDiaryDay(date);
+            updateChartsAndTable();
+          };
+          diaryList.appendChild(row);
+        });
+      }
+
+      todaySummary.textContent =
+        `${Math.round(totalCal)} kcal • ${totalC.toFixed(1)} g net • ${totalP.toFixed(1)} g P • ${totalF.toFixed(1)} g F`;
+
+      if (totalC === 0 && (!day.entries || !day.entries.length)) {
+        ketoFlag.textContent = "Keto status: –";
+        ketoFlag.className = "badge";
+      } else if (totalC <= KETO_LIMIT) {
+        ketoFlag.textContent = `Keto status: On (≤ ${KETO_LIMIT} g)`;
+        ketoFlag.className = "badge badge-good";
+      } else {
+        ketoFlag.textContent = `Keto status: Over (${totalC.toFixed(1)} g)`;
+        ketoFlag.className = "badge badge-bad";
+      }
+    }
+
+    btnSaveDay.onclick = () => {
+      const date = dateInput.value || getTodayISO();
+      dateInput.value = date;
+      const day = ensureDay(date);
+      day.weight = weightInput.value ? Number(weightInput.value) : null;
+      day.notes = notesInput.value || "";
+      day.photo = photoInput.value || "";
+      saveDiary(diary);
+      renderDiaryDay(date);
+      updateChartsAndTable();
+    };
+
+    btnToday.onclick = () => {
+      const date = getTodayISO();
+      dateInput.value = date;
+      if (!diary[date]) {
+        ensureDay(date);
+      }
+      renderDiaryDay(date);
+    };
+
+    btnClearDay.onclick = () => {
+      const date = dateInput.value;
+      if (!date || !diary[date]) return;
+      if (!confirm("Clear all entries, weight, notes and photo for this day?")) return;
+      delete diary[date];
+      saveDiary(diary);
+      diaryList.innerHTML = "";
+      notesInput.value = "";
+      photoInput.value = "";
+      weightInput.value = "";
+      todaySummary.textContent = "0 kcal • 0 g net • 0 g P • 0 g F";
+      ketoFlag.textContent = "Keto status: –";
+      ketoFlag.className = "badge";
+      updateChartsAndTable();
+    };
+
+    function getSortedDates() {
+      return Object.keys(diary).sort();
+    }
+
+    function calculateDayTotals(date) {
+      const day = diary[date];
+      if (!day) return { cal:0, carbs:0 };
+      let cal = 0, c = 0;
+      if (day.entries && day.entries.length) {
+        day.entries.forEach(e => {
+          cal += e.calories * e.qty;
+          c += e.carbs * e.qty;
+        });
+      }
+      return { cal, carbs:c };
+    }
+
+    function updateChartsAndTable() {
+      const dates = getSortedDates();
+      const labels = dates.map(d => formatDateHuman(d));
+      const weights = dates.map(d => diary[d].weight != null ? diary[d].weight : null);
+      const carbs = dates.map(d => calculateDayTotals(d).carbs);
+      const calories = dates.map(d => calculateDayTotals(d).cal);
+
+      const ctxW = document.getElementById("weightChart").getContext("2d");
+      const ctxC = document.getElementById("carbChart").getContext("2d");
+
+      if (weightChart) weightChart.destroy();
+      if (carbChart) carbChart.destroy();
+
+      weightChart = new Chart(ctxW, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "Weight (kg)",
+            data: weights,
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,.16)",
+            tension:0.25,
+            spanGaps:true,
+            pointRadius:2
+          }]
+        },
+        options: {
+          plugins: { legend:{ display:false } },
+          scales: {
+            x: { ticks:{ color:"#9ca3af", maxRotation:60, minRotation:30 } },
+            y: { ticks:{ color:"#9ca3af" }, beginAtZero:false }
+          }
+        }
+      });
+
+      carbChart = new Chart(ctxC, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [
+            {
+              label:"Net carbs (g)",
+              data: carbs,
+              backgroundColor:"#facc15"
+            },
+            {
+              label:"Keto limit (20 g)",
+              data: labels.map(() => KETO_LIMIT),
+              type:"line",
+              borderColor:"#f97316",
+              borderWidth:1.5,
+              pointRadius:0,
+              tension:0
+            }
+          ]
+        },
+        options: {
+          plugins: { legend:{ display:false } },
+          scales: {
+            x: { ticks:{ color:"#9ca3af", maxRotation:60, minRotation:30 } },
+            y: { ticks:{ color:"#9ca3af" }, beginAtZero:true }
+          }
+        }
+      });
+
+      tableBody.innerHTML = "";
+      const recent = [...dates].slice(-30).reverse();
+      recent.forEach(d => {
+        const day = diary[d];
+        const totals = calculateDayTotals(d);
+        const tr = document.createElement("tr");
+        const keto = totals.carbs > 0 && totals.carbs <= KETO_LIMIT;
+        tr.innerHTML = `
+          <td>${formatDateHuman(d)}</td>
+          <td>${day.weight != null ? day.weight.toFixed(1) + " kg" : ""}</td>
+          <td>${totals.carbs ? totals.carbs.toFixed(1) + " g" : ""}</td>
+          <td><span class="badge ${totals.carbs ? (keto ? "badge-good" : "badge-bad") : ""}">
+            ${totals.carbs ? (keto ? "Keto" : "> 20 g") : ""}
+          </span></td>
+          <td>${totals.cal ? Math.round(totals.cal) : ""}</td>
+          <td>${day.photo ? `<img src="${day.photo}" class="photo-thumb" />` : ""}</td>
+          <td>${day.notes || ""}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // Backup & restore
+    btnBackup.onclick = () => {
+      const payload = {
+        version: 1,
+        createdAt: new Date().toISOString(),
+        diary,
+        foods
+      };
+      const blob = new Blob([JSON.stringify(payload,null,2)], { type:"application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "elite-keto-backup-" + new Date().toISOString().slice(0,10) + ".json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    btnRestore.onclick = () => {
+      backupFile.click();
+    };
+
+    backupFile.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (!data || !data.diary || !data.foods) {
+            alert("Invalid backup file.");
+            return;
+          }
+          if (!confirm("Replace current data with backup? This cannot be undone.")) return;
+          diary = data.diary;
+          foods = data.foods;
+          saveDiary(diary);
+          saveFoods(foods);
+          renderFoodList();
+          renderSearch();
+          const date = dateInput.value || getTodayISO();
+          renderDiaryDay(date);
+          updateChartsAndTable();
+          alert("Backup restored.");
+        } catch {
+          alert("Could not read backup file.");
+        }
+      };
+      reader.readAsText(file);
+      backupFile.value = "";
+    });
+
+    (function init() {
+      const today = getTodayISO();
+      dateInput.value = today;
+      ensureDay(today);
+      renderFoodList();
+      renderSearch();
+      renderDiaryDay(today);
+      updateChartsAndTable();
+    })();
+  </script>
+</body>
+</html>
