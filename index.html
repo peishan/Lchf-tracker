@@ -23,9 +23,11 @@
       font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background: radial-gradient(circle at top, #022c22 0, #020617 50%, #020617 100%);
       color:var(--text);
+      font-size:16px;
+      line-height:1.5;
     }
-    h1 { font-size:1.45rem; margin:0 0 .2rem; }
-    h2 { font-size:1rem; margin:.1rem 0 .5rem; }
+    h1 { font-size:1.8rem; margin:0 0 .3rem; }
+    h2 { font-size:1.1rem; margin:.15rem 0 .5rem; }
     .grid { display:grid; grid-template-columns:1fr; gap:1rem; }
     @media (min-width:900px) {
       .grid { grid-template-columns:1.2fr 1.4fr; }
@@ -34,43 +36,43 @@
     .card {
       background: radial-gradient(circle at top left,#020b1f 0,#020617 55%);
       border-radius:14px;
-      padding:.85rem .9rem 1rem;
+      padding:1rem 1.05rem 1.1rem;
       box-shadow:0 12px 35px rgba(0,0,0,.65);
       border:1px solid rgba(148,163,184,.15);
     }
     .row { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; }
     .pill {
       display:inline-flex; align-items:center; gap:.3rem;
-      padding:.15rem .6rem; border-radius:999px;
+      padding:.18rem .7rem; border-radius:999px;
       background:rgba(15,23,42,.9); color:var(--muted);
-      font-size:.72rem;
+      font-size:.8rem;
     }
-    .pill-dot { width:7px; height:7px; border-radius:999px; background:var(--accent); }
+    .pill-dot { width:8px; height:8px; border-radius:999px; background:var(--accent); }
     .pill-warn .pill-dot { background:var(--warn); }
 
-    .metric { display:flex; flex-direction:column; margin-right:1rem; margin-top:.3rem; }
-    .metric-label { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
-    .metric-value { font-size:1.1rem; margin-top:.12rem; }
-    .metric-sub { font-size:.75rem; color:var(--muted); }
+    .metric { display:flex; flex-direction:column; margin-right:1.2rem; margin-top:.35rem; }
+    .metric-label { font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+    .metric-value { font-size:1.3rem; margin-top:.12rem; }
+    .metric-sub { font-size:.8rem; color:var(--muted); }
 
-    label { font-size:.75rem; color:var(--muted); display:block; margin-bottom:.1rem; }
+    label { font-size:.8rem; color:var(--muted); display:block; margin-bottom:.1rem; }
     input, textarea, select {
-      width:100%; padding:.35rem .45rem; border-radius:8px;
+      width:100%; padding:.4rem .5rem; border-radius:8px;
       border:1px solid rgba(148,163,184,.35);
-      background:#020617; color:var(--text); font-size:.8rem;
+      background:#020617; color:var(--text); font-size:.85rem;
     }
     input:focus, textarea:focus, select:focus {
       outline:1px solid var(--accent); border-color:var(--accent);
     }
-    textarea { min-height:52px; resize:vertical; }
+    textarea { min-height:56px; resize:vertical; }
     .row-inputs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.5rem; }
     @media (min-width:800px) {
       .row-inputs { grid-template-columns:repeat(4,minmax(0,1fr)); }
     }
     button {
       border:none; border-radius:999px;
-      padding:.4rem .9rem; margin-top:.35rem; margin-right:.35rem;
-      font-size:.8rem; cursor:pointer;
+      padding:.45rem 1rem; margin-top:.35rem; margin-right:.35rem;
+      font-size:.85rem; cursor:pointer;
       background:linear-gradient(to right,#22c55e,#16a34a); color:white;
     }
     button.secondary {
@@ -79,39 +81,47 @@
     button.danger {
       background:linear-gradient(to right,#b91c1c,#7f1d1d);
     }
-    button.small { padding:.25rem .6rem; font-size:.72rem; }
+    button.small { padding:.28rem .7rem; font-size:.78rem; }
     button:disabled { opacity:.5; cursor:default; }
-    .help { font-size:.72rem; color:var(--muted); margin-top:.25rem; }
+    .help { font-size:.78rem; color:var(--muted); margin-top:.25rem; }
 
     canvas { max-width:100%; }
 
-    table { width:100%; border-collapse:collapse; font-size:.78rem; margin-top:.4rem; }
-    th, td { padding:.28rem .35rem; border-bottom:1px solid rgba(30,64,175,.3); text-align:left; }
+    table { width:100%; border-collapse:collapse; font-size:.8rem; margin-top:.4rem; }
+    th, td { padding:.3rem .4rem; border-bottom:1px solid rgba(30,64,175,.3); text-align:left; }
     th { font-weight:500; color:var(--muted); background:rgba(15,23,42,.85); position:sticky; top:0; }
     tr:nth-child(even) { background:rgba(15,23,42,.7); }
 
     .badge {
-      padding:.1rem .45rem; border-radius:999px; font-size:.7rem;
+      padding:.15rem .55rem; border-radius:999px; font-size:.78rem;
       background:rgba(15,23,42,.8); color:var(--muted);
     }
-    .badge-good { background:var(--accent-soft); color:#bbf7d0; }
-    .badge-bad { background:rgba(248,113,113,.15); color:#fecaca; }
+    .badge-good {
+      background:var(--accent-soft);
+      color:#bbf7d0;
+      font-weight:600;
+    }
+    .badge-bad {
+      background:rgba(248,113,113,.25);
+      color:#fecaca;
+      font-weight:600;
+    }
     .photo-thumb {
-      width:38px; height:38px; border-radius:8px; object-fit:cover;
+      width:40px; height:40px; border-radius:8px; object-fit:cover;
       border:1px solid rgba(148,163,184,.4);
     }
 
     .flex-between { display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
     .chip {
       display:inline-flex; align-items:center; justify-content:center;
-      padding:.15rem .55rem; border-radius:999px;
-      font-size:.72rem; background:rgba(15,23,42,.95); color:var(--muted);
+      padding:.18rem .7rem; border-radius:999px;
+      font-size:.8rem; background:rgba(15,23,42,.95); color:var(--muted);
       border:1px solid rgba(148,163,184,.25);
     }
     .chip strong { color:var(--accent); }
-    .list-small { font-size:.75rem; margin-top:.3rem; color:var(--muted); }
-    .food-row { display:flex; justify-content:space-between; align-items:center; padding:.2rem 0; border-bottom:1px dashed rgba(30,64,175,.4); }
-    .food-row span { font-size:.8rem; }
+    .list-small { font-size:.78rem; margin-top:.3rem; color:var(--muted); }
+    .food-row { display:flex; justify-content:space-between; align-items:center; padding:.25rem 0; border-bottom:1px dashed rgba(30,64,175,.4); }
+    .food-row span { font-size:.85rem; }
     .food-row:last-child { border-bottom:none; }
     .scroll-y { max-height:230px; overflow-y:auto; }
   </style>
@@ -133,7 +143,7 @@
       <div>
         <h2>Backup & restore</h2>
         <p class="help">
-          Download a JSON backup of all logs + foods, or restore from a backup if you clear your browser.
+          Download a JSON backup of all logs + foods, or restore if you clear your browser.
         </p>
       </div>
       <div>
@@ -170,10 +180,10 @@
       <h2 style="margin-top:.7rem;">Add food</h2>
       <div class="row" style="margin-bottom:.3rem;">
         <div style="flex:1;">
-          <label for="foodSearch">Search saved foods</label>
-          <input id="foodSearch" type="text" placeholder="e.g. eggs, butter, Sahara yogurt" />
+          <label for="foodSearch">Search saved + online foods</label>
+          <input id="foodSearch" type="text" placeholder="e.g. eggs, butter, yogurt" />
         </div>
-        <div style="width:110px;">
+        <div style="width:120px;">
           <label for="meal">Meal</label>
           <select id="meal">
             <option value="breakfast">Breakfast</option>
@@ -246,7 +256,7 @@
       </div>
       <button id="btnAddFood">Add / update food</button>
       <p class="help">
-        Example: “Elite breakfast (3 eggs + butter)” with your usual macros. You can always edit later.
+        Example: “Elite breakfast (3 eggs + butter)” with your usual macros.
       </p>
 
       <h2 style="margin-top:.6rem;">Saved foods</h2>
@@ -256,12 +266,12 @@
     <!-- Charts -->
     <div class="card grid-wide">
       <h2>Weight trend</h2>
-      <canvas id="weightChart" height="120"></canvas>
+      <canvas id="weightChart" height="160"></canvas>
     </div>
 
     <div class="card grid-wide">
       <h2>Net carbs vs 20 g keto limit</h2>
-      <canvas id="carbChart" height="120"></canvas>
+      <canvas id="carbChart" height="160"></canvas>
     </div>
 
     <!-- Recent days table -->
@@ -290,6 +300,48 @@
     const STORAGE_LOG = "eliteKetoDiary_v1";
     const STORAGE_FOOD = "eliteKetoFoods_v1";
     const KETO_LIMIT = 20;
+
+    // TODO: paste your real API key between the quotes below:
+    const FOOD_API_KEY = "API_KEY_HERE";
+
+    // This example assumes FoodData Central style API. Adjust URL if your key is for a different service.
+    async function searchOnlineFoods(query) {
+      if (!FOOD_API_KEY || !query.trim()) return [];
+      try {
+        const url = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key="
+          + encodeURIComponent(FOOD_API_KEY)
+          + "&pageSize=10&query=" + encodeURIComponent(query);
+        const res = await fetch(url);
+        if (!res.ok) return [];
+        const data = await res.json();
+        if (!data.foods) return [];
+        return data.foods.map(f => {
+          // Extract macros if available
+          let kcal = 0, carbs = 0, protein = 0, fat = 0;
+          if (Array.isArray(f.foodNutrients)) {
+            f.foodNutrients.forEach(n => {
+              const nName = (n.nutrientName || "").toLowerCase();
+              if (nName.includes("energy") && n.unitName === "KCAL") kcal = n.value || 0;
+              if (nName.includes("carbohydrate") && !nName.includes("fiber")) carbs = n.value || 0;
+              if (nName.includes("protein")) protein = n.value || 0;
+              if (nName.includes("fat") && !nName.includes("saturated")) fat = n.value || 0;
+            });
+          }
+          return {
+            id: "fdc_" + f.fdcId,
+            name: f.description,
+            serving: (f.brandOwner || f.dataType || "per 100 g"),
+            calories: kcal,
+            carbs: carbs,
+            protein: protein,
+            fat: fat
+          };
+        });
+      } catch (e) {
+        console.error(e);
+        return [];
+      }
+    }
 
     const defaultFoods = [
       {
@@ -421,8 +473,8 @@
         const div = document.createElement("div");
         div.className = "food-row";
         div.innerHTML = `
-          <span>${f.name} <span style="color:var(--muted);font-size:.7rem;">(${f.serving})</span></span>
-          <span style="color:var(--muted);font-size:.72rem;">
+          <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
+          <span style="color:var(--muted);font-size:.78rem;">
             ${f.calories} kcal · ${f.carbs} g C · ${f.protein} g P · ${f.fat} g F
           </span>
         `;
@@ -474,35 +526,76 @@
       renderSearch();
     };
 
-    function searchFoods(query) {
+    function searchFoodsLocal(query) {
       const q = query.trim().toLowerCase();
       if (!q) return foods.slice(0, 20);
       return foods.filter(f => f.name.toLowerCase().includes(q)).slice(0, 20);
     }
 
+    let onlineSearchTimeout;
+
     function renderSearch() {
-      const results = searchFoods(foodSearch.value);
+      const q = foodSearch.value;
+      const localResults = searchFoodsLocal(q);
       searchResults.innerHTML = "";
-      if (!results.length) {
-        searchResults.innerHTML = "<p class='help'>No foods match. Add it in the food database.</p>";
-        return;
+
+      // Local results
+      if (localResults.length) {
+        const header = document.createElement("div");
+        header.className = "help";
+        header.textContent = "Saved foods";
+        searchResults.appendChild(header);
+        localResults.forEach(f => {
+          const row = document.createElement("div");
+          row.className = "food-row";
+          row.innerHTML = `
+            <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
+            <span style="color:var(--muted);font-size:.78rem;">
+              ${f.calories} kcal · ${f.carbs} C · ${f.protein} P · ${f.fat} F
+              <button class="small secondary" style="margin-left:.35rem;">Add</button>
+            </span>
+          `;
+          row.querySelector("button").onclick = (ev) => {
+            ev.stopPropagation();
+            addFoodToDiary(f);
+          };
+          searchResults.appendChild(row);
+        });
       }
-      results.forEach(f => {
-        const row = document.createElement("div");
-        row.className = "food-row";
-        row.innerHTML = `
-          <span>${f.name} <span style="color:var(--muted);font-size:.7rem;">(${f.serving})</span></span>
-          <span style="color:var(--muted);font-size:.72rem;">
-            ${f.calories} kcal · ${f.carbs} C · ${f.protein} P · ${f.fat} F
-            <button class="small secondary" style="margin-left:.35rem;">Add</button>
-          </span>
-        `;
-        row.querySelector("button").onclick = (ev) => {
-          ev.stopPropagation();
-          addFoodToDiary(f);
-        };
-        searchResults.appendChild(row);
-      });
+
+      // Clear pending online search
+      clearTimeout(onlineSearchTimeout);
+      if (!q.trim()) return;
+
+      // Online results (debounced)
+      onlineSearchTimeout = setTimeout(async () => {
+        const online = await searchOnlineFoods(q);
+        if (!online.length) return;
+        const header = document.createElement("div");
+        header.className = "help";
+        header.textContent = "Online foods";
+        searchResults.appendChild(header);
+        online.forEach(f => {
+          const row = document.createElement("div");
+          row.className = "food-row";
+          row.innerHTML = `
+            <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
+            <span style="color:var(--muted);font-size:.78rem;">
+              ${f.calories || "?"} kcal · ${f.carbs || "?"} C · ${f.protein || "?"} P · ${f.fat || "?"} F
+              <button class="small secondary" style="margin-left:.35rem;">Import</button>
+            </span>
+          `;
+          row.querySelector("button").onclick = (ev) => {
+            ev.stopPropagation();
+            // Save to local DB and add to diary
+            foods.push(f);
+            saveFoods(foods);
+            renderFoodList();
+            addFoodToDiary(f);
+          };
+          searchResults.appendChild(row);
+        });
+      }, 600);
     }
 
     foodSearch.addEventListener("input", renderSearch);
@@ -557,8 +650,8 @@
           const row = document.createElement("div");
           row.className = "food-row";
           row.innerHTML = `
-            <span>[${e.meal}] ${e.name} <span style="color:var(--muted);font-size:.7rem;">(${e.serving})</span></span>
-            <span style="color:var(--muted);font-size:.72rem;">
+            <span>[${e.meal}] ${e.name} <span style="color:var(--muted);font-size:.78rem;">(${e.serving})</span></span>
+            <span style="color:var(--muted);font-size:.78rem;">
               ${e.calories} kcal · ${e.carbs} C · ${e.protein} P · ${e.fat} F
               <button class="small danger" data-index="${index}">✕</button>
             </span>
@@ -654,6 +747,7 @@
       const ctxC = document.getElementById("carbChart").getContext("2d");
 
       if (weightChart) weightChart.destroy();
+      if (carbChart) weightChart = null;
       if (carbChart) carbChart.destroy();
 
       weightChart = new Chart(ctxW, {
@@ -667,7 +761,7 @@
             backgroundColor: "rgba(34,197,94,.16)",
             tension:0.25,
             spanGaps:true,
-            pointRadius:2
+            pointRadius:3
           }]
         },
         options: {
