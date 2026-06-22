@@ -243,6 +243,15 @@
           <label for="foodSearch">Search saved + online foods</label>
           <input id="foodSearch" type="text" placeholder="e.g. eggs, butter, yogurt" />
         </div>
+        <div style="width:120px;">
+          <label for="qty">Qty</label>
+          <div style="display:flex; align-items:center; gap:.25rem;">
+            <button type="button" id="qtyMinus" class="small secondary" style="padding:.2rem .55rem;">–</button>
+            <input id="qty" type="number" step="0.25" min="0.1" value="1"
+                   style="text-align:center; padding:.3rem .2rem;" />
+            <button type="button" id="qtyPlus" class="small secondary" style="padding:.2rem .55rem;">+</button>
+          </div>
+        </div>
         <div style="width:130px;">
           <label for="meal">Meal</label>
           <select id="meal">
@@ -358,7 +367,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     // CONFIG
-    const FOOD_API_KEY = "5ZTb3FqNkqrjH1gOp87GQu0hOuq19b4ek3ncieMl"; // paste USDA key
+    const FOOD_API_KEY = "5ZTb3FqNkqrjH1gOp87GQu0hOuq19b4ek3ncieMl"; // your USDA key
 
     const STORAGE_LOG = "eliteKetoDiary_v1";
     const STORAGE_FOOD = "eliteKetoFoods_v1";
@@ -491,7 +500,10 @@
     const tableBody = document.getElementById("tableBody");
 
     const foodSearch = document.getElementById("foodSearch");
+    const qtyInput   = document.getElementById("qty");
     const mealSelect = document.getElementById("meal");
+    const qtyMinus   = document.getElementById("qtyMinus");
+    const qtyPlus    = document.getElementById("qtyPlus");
     const searchResults = document.getElementById("searchResults");
     const foodList = document.getElementById("foodList");
 
@@ -594,6 +606,27 @@
 
     let onlineSearchTimeout;
 
+    function clampQty(val) {
+      if (isNaN(val) || val <= 0) return 0.1;
+      return Math.round(val * 4) / 4; // nearest 0.25
+    }
+
+    qtyMinus.onclick = () => {
+      const current = Number(qtyInput.value) || 1;
+      const next = clampQty(current - 0.25);
+      qtyInput.value = next.toString();
+    };
+
+    qtyPlus.onclick = () => {
+      const current = Number(qtyInput.value) || 1;
+      const next = clampQty(current + 0.25);
+      qtyInput.value = next.toString();
+    };
+
+    qtyInput.addEventListener("change", () => {
+      qtyInput.value = clampQty(Number(qtyInput.value) || 1).toString();
+    });
+
     function renderSearch() {
       const q = foodSearch.value;
       const localResults = searchFoodsLocal(q);
@@ -660,7 +693,7 @@
       const date = dateInput.value || getTodayISO();
       dateInput.value = date;
       const day = ensureDay(date);
-      const qty = 1;
+      const qty = Number(qtyInput.value) || 1;
       day.entries.push({
         id: "entry_" + Date.now(),
         foodId: food.id,
@@ -676,6 +709,7 @@
       saveDiary(diary);
       renderDiaryDay(date);
       updateChartsAndTable();
+      qtyInput.value = "1";
     }
 
     function renderDiaryDay(date) {
@@ -706,7 +740,9 @@
           const row = document.createElement("div");
           row.className = "food-row";
           row.innerHTML = `
-            <span>[${e.meal}] ${e.name} <span style="color:var(--muted);font-size:.78rem;">(${e.serving})</span></span>
+            <span>[${e.meal}] ${e.name}
+              <span style="color:var(--muted);font-size:.78rem;">(${e.serving} · x ${e.qty})</span>
+            </span>
             <span style="color:var(--muted);font-size:.78rem;">
               ${e.calories} kcal · ${e.carbs} C · ${e.protein} P · ${e.fat} F
               <button class="small danger" data-index="${index}">✕</button>
