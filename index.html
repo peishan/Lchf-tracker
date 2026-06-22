@@ -22,31 +22,37 @@
       --text: #f9fafb;
       --muted: #cbd5f5;
     }
+
     * { box-sizing:border-box; }
+
+    html {
+      font-size: 120%; /* global zoom; tweak if still small */
+    }
 
     body {
       margin:0; padding:1.2rem;
-      font-family: "Georgia", "Times New Roman", ui-serif, system-ui;
+      font-family: "Georgia", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at top left, #ec4899 0, transparent 45%),
         radial-gradient(circle at top right, #38bdf8 0, transparent 45%),
         radial-gradient(circle at bottom, #4ade80 0, transparent 50%),
         linear-gradient(to bottom, var(--bg-gradient-top), var(--bg));
       color:var(--text);
-      font-size:17px;
-      line-height:1.6;
+      font-size:1rem;
+      line-height:1.7;
     }
+
     h1 {
-      font-size:2rem;
-      margin:0 0 .35rem;
+      font-size:2.4rem;
+      margin:0 0 .4rem;
       letter-spacing:.02em;
     }
     h2 {
-      font-size:1.15rem;
-      margin:.15rem 0 .6rem;
+      font-size:1.5rem;
+      margin:.2rem 0 .7rem;
     }
 
-    .grid { display:grid; grid-template-columns:1fr; gap:1rem; }
+    .grid { display:grid; grid-template-columns:1fr; gap:1.1rem; }
     @media (min-width:900px) {
       .grid { grid-template-columns:1.2fr 1.4fr; }
       .grid-wide { grid-column:1 / -1; }
@@ -57,18 +63,18 @@
         linear-gradient(135deg, rgba(248,113,181,.18), rgba(56,189,248,.1)),
         radial-gradient(circle at top left,#020617 0,#020617 60%);
       border-radius:18px;
-      padding:1.1rem 1.1rem 1.2rem;
+      padding:1.15rem 1.15rem 1.25rem;
       box-shadow:0 18px 40px rgba(15,23,42,.75);
       border:1px solid rgba(148,163,184,.35);
     }
 
-    .row { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:center; }
+    .row { display:flex; flex-wrap:wrap; gap:.7rem 1.1rem; align-items:center; }
 
     .pill {
-      display:inline-flex; align-items:center; gap:.35rem;
-      padding:.22rem .85rem; border-radius:999px;
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.25rem .9rem; border-radius:999px;
       background:rgba(15,23,42,.92); color:var(--muted);
-      font-size:.85rem;
+      font-size:1rem;
       border:1px solid rgba(148,163,184,.3);
     }
     .pill-dot {
@@ -82,23 +88,23 @@
     }
 
     label {
-      font-size:.85rem; color:var(--muted);
-      display:block; margin-bottom:.12rem;
+      font-size:1rem; color:var(--muted);
+      display:block; margin-bottom:.15rem;
     }
     input, textarea, select {
-      width:100%; padding:.45rem .6rem; border-radius:10px;
+      width:100%; padding:.5rem .7rem; border-radius:10px;
       border:1px solid rgba(148,163,184,.45);
-      background:#020617; color:var(--text); font-size:.9rem;
+      background:#020617; color:var(--text); font-size:1rem;
     }
     input:focus, textarea:focus, select:focus {
       outline:2px solid var(--accent2); border-color:var(--accent2);
     }
-    textarea { min-height:60px; resize:vertical; }
+    textarea { min-height:70px; resize:vertical; }
 
     .row-inputs {
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:.6rem;
+      gap:.7rem;
     }
     @media (min-width:800px) {
       .row-inputs { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -106,8 +112,8 @@
 
     button {
       border:none; border-radius:999px;
-      padding:.48rem 1.05rem; margin-top:.4rem; margin-right:.4rem;
-      font-size:.9rem; cursor:pointer;
+      padding:.55rem 1.2rem; margin-top:.45rem; margin-right:.45rem;
+      font-size:1rem; cursor:pointer;
       background:linear-gradient(to right,#f97373,#ec4899);
       color:white;
       box-shadow:0 10px 25px rgba(248,113,181,.45);
@@ -121,18 +127,18 @@
       box-shadow:0 10px 25px rgba(248,113,133,.45);
     }
     button.small {
-      padding:.3rem .75rem;
-      font-size:.8rem;
+      padding:.32rem .8rem;
+      font-size:.95rem;
       box-shadow:none;
     }
     button:disabled { opacity:.55; cursor:default; box-shadow:none; }
 
-    .help { font-size:.82rem; color:var(--muted); margin-top:.3rem; }
+    .help { font-size:.98rem; color:var(--muted); margin-top:.35rem; }
 
     canvas { max-width:100%; border-radius:12px; background:rgba(15,23,42,.8); }
 
-    table { width:100%; border-collapse:collapse; font-size:.82rem; margin-top:.45rem; }
-    th, td { padding:.32rem .42rem; border-bottom:1px solid rgba(55,65,81,.7); text-align:left; }
+    table { width:100%; border-collapse:collapse; font-size:.98rem; margin-top:.5rem; }
+    th, td { padding:.36rem .46rem; border-bottom:1px solid rgba(55,65,81,.7); text-align:left; }
     th {
       font-weight:500; color:var(--muted);
       background:rgba(15,23,42,.92);
@@ -142,7 +148,7 @@
     tr:nth-child(even) { background:rgba(15,23,42,.8); }
 
     .badge {
-      padding:.16rem .6rem; border-radius:999px; font-size:.8rem;
+      padding:.18rem .7rem; border-radius:999px; font-size:.98rem;
       background:rgba(15,23,42,.9); color:var(--muted);
       border:1px solid rgba(148,163,184,.4);
     }
@@ -158,31 +164,31 @@
     }
 
     .photo-thumb {
-      width:42px; height:42px; border-radius:10px; object-fit:cover;
+      width:46px; height:46px; border-radius:10px; object-fit:cover;
       border:1px solid rgba(148,163,184,.5);
     }
 
-    .flex-between { display:flex; justify-content:space-between; align-items:center; gap:.6rem; }
+    .flex-between { display:flex; justify-content:space-between; align-items:center; gap:.7rem; }
 
     .chip {
       display:inline-flex; align-items:center; justify-content:center;
-      padding:.22rem .8rem; border-radius:999px;
-      font-size:.85rem;
+      padding:.24rem .9rem; border-radius:999px;
+      font-size:1rem;
       background:radial-gradient(circle at top left,rgba(56,189,248,.2),rgba(15,23,42,.95));
       color:var(--muted);
       border:1px solid rgba(148,163,184,.4);
     }
 
-    .list-small { font-size:.82rem; margin-top:.35rem; color:var(--muted); }
+    .list-small { font-size:.98rem; margin-top:.4rem; color:var(--muted); }
 
     .food-row {
       display:flex; justify-content:space-between; align-items:center;
-      padding:.28rem 0; border-bottom:1px dashed rgba(75,85,99,.8);
+      padding:.32rem 0; border-bottom:1px dashed rgba(75,85,99,.8);
     }
-    .food-row span { font-size:.86rem; }
+    .food-row span { font-size:1rem; }
     .food-row:last-child { border-bottom:none; }
 
-    .scroll-y { max-height:230px; overflow-y:auto; }
+    .scroll-y { max-height:260px; overflow-y:auto; }
 
   </style>
 </head>
@@ -198,7 +204,7 @@
   </div>
 
   <!-- Backup & restore -->
-  <div class="card" style="margin-top:.9rem; margin-bottom:.7rem;">
+  <div class="card" style="margin-top:1rem; margin-bottom:.8rem;">
     <div class="flex-between">
       <div>
         <h2>Backup & restore</h2>
@@ -218,7 +224,7 @@
     <!-- Left: Diary & food search -->
     <div class="card">
       <h2>Daily diary</h2>
-      <div class="row" style="margin-bottom:.45rem;">
+      <div class="row" style="margin-bottom:.5rem;">
         <div style="flex:1;">
           <label for="date">Date</label>
           <input id="date" type="date" />
@@ -237,22 +243,22 @@
         <span id="ketoFlag" class="badge">Keto status: –</span>
       </div>
 
-      <h2 style="margin-top:.85rem;">Add food</h2>
-      <div class="row" style="margin-bottom:.35rem;">
+      <h2 style="margin-top:.9rem;">Add food</h2>
+      <div class="row" style="margin-bottom:.4rem;">
         <div style="flex:1;">
           <label for="foodSearch">Search saved + online foods</label>
           <input id="foodSearch" type="text" placeholder="e.g. eggs, butter, yogurt" />
         </div>
-        <div style="width:120px;">
+        <div style="width:130px;">
           <label for="qty">Qty</label>
-          <div style="display:flex; align-items:center; gap:.25rem;">
-            <button type="button" id="qtyMinus" class="small secondary" style="padding:.2rem .55rem;">–</button>
+          <div style="display:flex; align-items:center; gap:.3rem;">
+            <button type="button" id="qtyMinus" class="small secondary" style="padding:.22rem .6rem;">–</button>
             <input id="qty" type="number" step="0.25" min="0.1" value="1"
-                   style="text-align:center; padding:.3rem .2rem;" />
-            <button type="button" id="qtyPlus" class="small secondary" style="padding:.2rem .55rem;">+</button>
+                   style="text-align:center; padding:.35rem .25rem;" />
+            <button type="button" id="qtyPlus" class="small secondary" style="padding:.22rem .6rem;">+</button>
           </div>
         </div>
-        <div style="width:130px;">
+        <div style="width:140px;">
           <label for="meal">Meal</label>
           <select id="meal">
             <option value="breakfast">Breakfast</option>
@@ -264,21 +270,21 @@
       </div>
       <div id="searchResults" class="scroll-y"></div>
 
-      <h2 style="margin-top:.9rem;">Diary foods for this day</h2>
+      <h2 style="margin-top:1rem;">Diary foods for this day</h2>
       <div id="diaryList" class="scroll-y"></div>
 
-      <div style="margin-top:.8rem;">
+      <div style="margin-top:.9rem;">
         <label for="notes">Notes / events</label>
         <textarea id="notes" placeholder="Elite breakfast, Mum’s veg, migraine, period, fasting…"></textarea>
       </div>
-      <div class="row" style="margin-top:.55rem;">
+      <div class="row" style="margin-top:.6rem;">
         <div style="flex:1;">
           <label for="photo">Progress photo URL (optional)</label>
           <input id="photo" type="url" placeholder="Paste image link if you have one" />
         </div>
       </div>
 
-      <div class="row" style="margin-top:.7rem;">
+      <div class="row" style="margin-top:.8rem;">
         <button id="btnSaveDay">Save / update day</button>
         <button class="secondary" id="btnToday">Use today</button>
         <button class="danger" id="btnClearDay">Clear this day</button>
@@ -328,23 +334,23 @@
         Example: “Elite breakfast (3 eggs + butter)” with your usual macros.
       </p>
 
-      <h2 style="margin-top:.7rem;">Saved foods</h2>
+      <h2 style="margin-top:.8rem;">Saved foods</h2>
       <div id="foodList" class="scroll-y"></div>
     </div>
 
     <!-- Charts -->
     <div class="card grid-wide">
       <h2>Weight trend</h2>
-      <canvas id="weightChart" height="170"></canvas>
+      <canvas id="weightChart" height="180"></canvas>
     </div>
 
     <div class="card grid-wide">
       <h2>Net carbs vs 20 g keto limit</h2>
-      <canvas id="carbChart" height="170"></canvas>
+      <canvas id="carbChart" height="180"></canvas>
     </div>
 
     <!-- Recent days table -->
-    <div class="card grid-wide" style="max-height:260px; overflow:auto;">
+    <div class="card grid-wide" style="max-height:280px; overflow:auto;">
       <h2>Recent days</h2>
       <table>
         <thead>
@@ -545,8 +551,8 @@
         const div = document.createElement("div");
         div.className = "food-row";
         div.innerHTML = `
-          <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
-          <span style="color:var(--muted);font-size:.78rem;">
+          <span>${f.name} <span style="color:var(--muted);font-size:.9rem;">(${f.serving})</span></span>
+          <span style="color:var(--muted);font-size:.9rem;">
             ${f.calories} kcal · ${f.carbs} g C · ${f.protein} g P · ${f.fat} g F
           </span>
         `;
@@ -641,10 +647,10 @@
           const row = document.createElement("div");
           row.className = "food-row";
           row.innerHTML = `
-            <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
-            <span style="color:var(--muted);font-size:.78rem;">
+            <span>${f.name} <span style="color:var(--muted);font-size:.9rem;">(${f.serving})</span></span>
+            <span style="color:var(--muted);font-size:.9rem;">
               ${f.calories} kcal · ${f.carbs} C · ${f.protein} P · ${f.fat} F
-              <button class="small secondary" style="margin-left:.35rem;">Add</button>
+              <button class="small secondary" style="margin-left:.4rem;">Add</button>
             </span>
           `;
           row.querySelector("button").onclick = (ev) => {
@@ -669,10 +675,10 @@
           const row = document.createElement("div");
           row.className = "food-row";
           row.innerHTML = `
-            <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
-            <span style="color:var(--muted);font-size:.78rem;">
+            <span>${f.name} <span style="color:var(--muted);font-size:.9rem;">(${f.serving})</span></span>
+            <span style="color:var(--muted);font-size:.9rem;">
               ${f.calories || "?"} kcal · ${f.carbs || "?"} C · ${f.protein || "?"} P · ${f.fat || "?"} F
-              <button class="small secondary" style="margin-left:.35rem;">Import</button>
+              <button class="small secondary" style="margin-left:.4rem;">Import</button>
             </span>
           `;
           row.querySelector("button").onclick = (ev) => {
@@ -741,9 +747,9 @@
           row.className = "food-row";
           row.innerHTML = `
             <span>[${e.meal}] ${e.name}
-              <span style="color:var(--muted);font-size:.78rem;">(${e.serving} · x ${e.qty})</span>
+              <span style="color:var(--muted);font-size:.9rem;">(${e.serving} · x ${e.qty})</span>
             </span>
-            <span style="color:var(--muted);font-size:.78rem;">
+            <span style="color:var(--muted);font-size:.9rem;">
               ${e.calories} kcal · ${e.carbs} C · ${e.protein} P · ${e.fat} F
               <button class="small danger" data-index="${index}">✕</button>
             </span>
