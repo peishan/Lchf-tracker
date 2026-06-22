@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <title>Elite Keto / LCHF Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Fonts: Roboto (UI) + Lora (headings) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       color-scheme: dark;
@@ -11,9 +17,9 @@
       --bg-gradient-top: #1f2937;
       --card: #0b1020;
       --card2: #111827;
-      --accent: #f97373;        /* cute coral-pink */
-      --accent2: #38bdf8;       /* sky blue */
-      --accent3: #a855f7;       /* purple */
+      --accent: #f97373;
+      --accent2: #38bdf8;
+      --accent3: #a855f7;
       --keto-good: #22c55e;
       --keto-bad: #f97316;
       --accent-soft: rgba(248,113,181,.16);
@@ -26,33 +32,41 @@
     * { box-sizing:border-box; }
 
     html {
-      font-size: 120%; /* global zoom; tweak if still small */
+      font-size: 108%;
     }
 
     body {
-      margin:0; padding:1.2rem;
-      font-family: "Georgia", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin:0;
+      padding:1.05rem;
+      font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at top left, #ec4899 0, transparent 45%),
         radial-gradient(circle at top right, #38bdf8 0, transparent 45%),
         radial-gradient(circle at bottom, #4ade80 0, transparent 50%),
         linear-gradient(to bottom, var(--bg-gradient-top), var(--bg));
       color:var(--text);
-      font-size:1rem;
-      line-height:1.7;
+      font-size:0.9rem;
+      line-height:1.6;
+    }
+
+    h1, h2 {
+      font-family: "Lora", "Roboto", system-ui, serif;
     }
 
     h1 {
-      font-size:2.4rem;
-      margin:0 0 .4rem;
-      letter-spacing:.02em;
-    }
-    h2 {
-      font-size:1.5rem;
-      margin:.2rem 0 .7rem;
+      font-size:2rem;
+      margin:0 0 .35rem;
+      letter-spacing:.01em;
+      font-weight:600;
     }
 
-    .grid { display:grid; grid-template-columns:1fr; gap:1.1rem; }
+    h2 {
+      font-size:1.25rem;
+      margin:.2rem 0 .6rem;
+      font-weight:500;
+    }
+
+    .grid { display:grid; grid-template-columns:1fr; gap:1rem; }
     @media (min-width:900px) {
       .grid { grid-template-columns:1.2fr 1.4fr; }
       .grid-wide { grid-column:1 / -1; }
@@ -63,60 +77,74 @@
         linear-gradient(135deg, rgba(248,113,181,.18), rgba(56,189,248,.1)),
         radial-gradient(circle at top left,#020617 0,#020617 60%);
       border-radius:18px;
-      padding:1.15rem 1.15rem 1.25rem;
+      padding:1.05rem 1.05rem 1.15rem;
       box-shadow:0 18px 40px rgba(15,23,42,.75);
       border:1px solid rgba(148,163,184,.35);
     }
 
-    .row { display:flex; flex-wrap:wrap; gap:.7rem 1.1rem; align-items:center; }
+    .row { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:center; }
 
     .pill {
-      display:inline-flex; align-items:center; gap:.4rem;
-      padding:.25rem .9rem; border-radius:999px;
+      display:inline-flex; align-items:center; gap:.32rem;
+      padding:.2rem .8rem; border-radius:999px;
       background:rgba(15,23,42,.92); color:var(--muted);
-      font-size:1rem;
+      font-size:.9rem;
       border:1px solid rgba(148,163,184,.3);
     }
     .pill-dot {
-      width:10px; height:10px; border-radius:999px;
+      width:9px; height:9px; border-radius:999px;
       background:var(--accent);
-      box-shadow:0 0 8px rgba(248,113,181,.8);
+      box-shadow:0 0 7px rgba(248,113,181,.8);
     }
     .pill-warn .pill-dot {
       background:var(--warn);
-      box-shadow:0 0 8px rgba(251,146,60,.8);
+      box-shadow:0 0 7px rgba(251,146,60,.8);
     }
 
     label {
-      font-size:1rem; color:var(--muted);
-      display:block; margin-bottom:.15rem;
+      font-size:.9rem;
+      color:var(--muted);
+      display:block;
+      margin-bottom:.1rem;
+      font-weight:500;
     }
+
     input, textarea, select {
-      width:100%; padding:.5rem .7rem; border-radius:10px;
+      width:100%;
+      padding:.42rem .6rem;
+      border-radius:10px;
       border:1px solid rgba(148,163,184,.45);
-      background:#020617; color:var(--text); font-size:1rem;
+      background:#020617;
+      color:var(--text);
+      font-size:.9rem;
     }
     input:focus, textarea:focus, select:focus {
-      outline:2px solid var(--accent2); border-color:var(--accent2);
+      outline:2px solid var(--accent2);
+      border-color:var(--accent2);
     }
-    textarea { min-height:70px; resize:vertical; }
+    textarea { min-height:64px; resize:vertical; }
 
     .row-inputs {
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:.7rem;
+      gap:.6rem;
     }
     @media (min-width:800px) {
       .row-inputs { grid-template-columns:repeat(3,minmax(0,1fr)); }
     }
 
     button {
-      border:none; border-radius:999px;
-      padding:.55rem 1.2rem; margin-top:.45rem; margin-right:.45rem;
-      font-size:1rem; cursor:pointer;
+      border:none;
+      border-radius:999px;
+      padding:.46rem 1.05rem;
+      margin-top:.4rem;
+      margin-right:.4rem;
+      font-size:.9rem;
+      cursor:pointer;
       background:linear-gradient(to right,#f97373,#ec4899);
       color:white;
       box-shadow:0 10px 25px rgba(248,113,181,.45);
+      font-weight:500;
     }
     button.secondary {
       background:linear-gradient(to right,#38bdf8,#0ea5e9);
@@ -127,18 +155,18 @@
       box-shadow:0 10px 25px rgba(248,113,133,.45);
     }
     button.small {
-      padding:.32rem .8rem;
-      font-size:.95rem;
+      padding:.28rem .7rem;
+      font-size:.84rem;
       box-shadow:none;
     }
     button:disabled { opacity:.55; cursor:default; box-shadow:none; }
 
-    .help { font-size:.98rem; color:var(--muted); margin-top:.35rem; }
+    .help { font-size:.84rem; color:var(--muted); margin-top:.28rem; }
 
     canvas { max-width:100%; border-radius:12px; background:rgba(15,23,42,.8); }
 
-    table { width:100%; border-collapse:collapse; font-size:.98rem; margin-top:.5rem; }
-    th, td { padding:.36rem .46rem; border-bottom:1px solid rgba(55,65,81,.7); text-align:left; }
+    table { width:100%; border-collapse:collapse; font-size:.84rem; margin-top:.4rem; }
+    th, td { padding:.3rem .4rem; border-bottom:1px solid rgba(55,65,81,.7); text-align:left; }
     th {
       font-weight:500; color:var(--muted);
       background:rgba(15,23,42,.92);
@@ -148,8 +176,11 @@
     tr:nth-child(even) { background:rgba(15,23,42,.8); }
 
     .badge {
-      padding:.18rem .7rem; border-radius:999px; font-size:.98rem;
-      background:rgba(15,23,42,.9); color:var(--muted);
+      padding:.14rem .55rem;
+      border-radius:999px;
+      font-size:.84rem;
+      background:rgba(15,23,42,.9);
+      color:var(--muted);
       border:1px solid rgba(148,163,184,.4);
     }
     .badge-good {
@@ -164,32 +195,34 @@
     }
 
     .photo-thumb {
-      width:46px; height:46px; border-radius:10px; object-fit:cover;
+      width:42px;
+      height:42px;
+      border-radius:10px;
+      object-fit:cover;
       border:1px solid rgba(148,163,184,.5);
     }
 
-    .flex-between { display:flex; justify-content:space-between; align-items:center; gap:.7rem; }
+    .flex-between { display:flex; justify-content:space-between; align-items:center; gap:.6rem; }
 
     .chip {
       display:inline-flex; align-items:center; justify-content:center;
-      padding:.24rem .9rem; border-radius:999px;
-      font-size:1rem;
+      padding:.2rem .75rem; border-radius:999px;
+      font-size:.9rem;
       background:radial-gradient(circle at top left,rgba(56,189,248,.2),rgba(15,23,42,.95));
       color:var(--muted);
       border:1px solid rgba(148,163,184,.4);
     }
 
-    .list-small { font-size:.98rem; margin-top:.4rem; color:var(--muted); }
+    .list-small { font-size:.84rem; margin-top:.33rem; color:var(--muted); }
 
     .food-row {
       display:flex; justify-content:space-between; align-items:center;
-      padding:.32rem 0; border-bottom:1px dashed rgba(75,85,99,.8);
+      padding:.26rem 0; border-bottom:1px dashed rgba(75,85,99,.8);
     }
-    .food-row span { font-size:1rem; }
+    .food-row span { font-size:.9rem; }
     .food-row:last-child { border-bottom:none; }
 
-    .scroll-y { max-height:260px; overflow-y:auto; }
-
+    .scroll-y { max-height:240px; overflow-y:auto; }
   </style>
 </head>
 <body>
@@ -204,7 +237,7 @@
   </div>
 
   <!-- Backup & restore -->
-  <div class="card" style="margin-top:1rem; margin-bottom:.8rem;">
+  <div class="card" style="margin-top:.9rem; margin-bottom:.7rem;">
     <div class="flex-between">
       <div>
         <h2>Backup & restore</h2>
@@ -224,7 +257,7 @@
     <!-- Left: Diary & food search -->
     <div class="card">
       <h2>Daily diary</h2>
-      <div class="row" style="margin-bottom:.5rem;">
+      <div class="row" style="margin-bottom:.45rem;">
         <div style="flex:1;">
           <label for="date">Date</label>
           <input id="date" type="date" />
@@ -243,22 +276,22 @@
         <span id="ketoFlag" class="badge">Keto status: –</span>
       </div>
 
-      <h2 style="margin-top:.9rem;">Add food</h2>
-      <div class="row" style="margin-bottom:.4rem;">
+      <h2 style="margin-top:.85rem;">Add food</h2>
+      <div class="row" style="margin-bottom:.35rem;">
         <div style="flex:1;">
           <label for="foodSearch">Search saved + online foods</label>
           <input id="foodSearch" type="text" placeholder="e.g. eggs, butter, yogurt" />
         </div>
-        <div style="width:130px;">
+        <div style="width:115px;">
           <label for="qty">Qty</label>
-          <div style="display:flex; align-items:center; gap:.3rem;">
-            <button type="button" id="qtyMinus" class="small secondary" style="padding:.22rem .6rem;">–</button>
+          <div style="display:flex; align-items:center; gap:.25rem;">
+            <button type="button" id="qtyMinus" class="small secondary" style="padding:.18rem .5rem;">–</button>
             <input id="qty" type="number" step="0.25" min="0.1" value="1"
-                   style="text-align:center; padding:.35rem .25rem;" />
-            <button type="button" id="qtyPlus" class="small secondary" style="padding:.22rem .6rem;">+</button>
+                   style="text-align:center; padding:.28rem .18rem;" />
+            <button type="button" id="qtyPlus" class="small secondary" style="padding:.18rem .5rem;">+</button>
           </div>
         </div>
-        <div style="width:140px;">
+        <div style="width:125px;">
           <label for="meal">Meal</label>
           <select id="meal">
             <option value="breakfast">Breakfast</option>
@@ -270,21 +303,21 @@
       </div>
       <div id="searchResults" class="scroll-y"></div>
 
-      <h2 style="margin-top:1rem;">Diary foods for this day</h2>
+      <h2 style="margin-top:.9rem;">Diary foods for this day</h2>
       <div id="diaryList" class="scroll-y"></div>
 
-      <div style="margin-top:.9rem;">
+      <div style="margin-top:.8rem;">
         <label for="notes">Notes / events</label>
         <textarea id="notes" placeholder="Elite breakfast, Mum’s veg, migraine, period, fasting…"></textarea>
       </div>
-      <div class="row" style="margin-top:.6rem;">
+      <div class="row" style="margin-top:.55rem;">
         <div style="flex:1;">
           <label for="photo">Progress photo URL (optional)</label>
           <input id="photo" type="url" placeholder="Paste image link if you have one" />
         </div>
       </div>
 
-      <div class="row" style="margin-top:.8rem;">
+      <div class="row" style="margin-top:.7rem;">
         <button id="btnSaveDay">Save / update day</button>
         <button class="secondary" id="btnToday">Use today</button>
         <button class="danger" id="btnClearDay">Clear this day</button>
@@ -334,23 +367,23 @@
         Example: “Elite breakfast (3 eggs + butter)” with your usual macros.
       </p>
 
-      <h2 style="margin-top:.8rem;">Saved foods</h2>
+      <h2 style="margin-top:.7rem;">Saved foods</h2>
       <div id="foodList" class="scroll-y"></div>
     </div>
 
     <!-- Charts -->
     <div class="card grid-wide">
       <h2>Weight trend</h2>
-      <canvas id="weightChart" height="180"></canvas>
+      <canvas id="weightChart" height="165"></canvas>
     </div>
 
     <div class="card grid-wide">
       <h2>Net carbs vs 20 g keto limit</h2>
-      <canvas id="carbChart" height="180"></canvas>
+      <canvas id="carbChart" height="165"></canvas>
     </div>
 
     <!-- Recent days table -->
-    <div class="card grid-wide" style="max-height:280px; overflow:auto;">
+    <div class="card grid-wide" style="max-height:250px; overflow:auto;">
       <h2>Recent days</h2>
       <table>
         <thead>
@@ -373,7 +406,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     // CONFIG
-    const FOOD_API_KEY = "5ZTb3FqNkqrjH1gOp87GQu0hOuq19b4ek3ncieMl"; // your USDA key
+    const FOOD_API_KEY = "5ZTb3FqNkqrjH1gOp87GQu0hOuq19b4ek3ncieMl";
 
     const STORAGE_LOG = "eliteKetoDiary_v1";
     const STORAGE_FOOD = "eliteKetoFoods_v1";
@@ -551,8 +584,8 @@
         const div = document.createElement("div");
         div.className = "food-row";
         div.innerHTML = `
-          <span>${f.name} <span style="color:var(--muted);font-size:.9rem;">(${f.serving})</span></span>
-          <span style="color:var(--muted);font-size:.9rem;">
+          <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
+          <span style="color:var(--muted);font-size:.78rem;">
             ${f.calories} kcal · ${f.carbs} g C · ${f.protein} g P · ${f.fat} g F
           </span>
         `;
@@ -614,7 +647,7 @@
 
     function clampQty(val) {
       if (isNaN(val) || val <= 0) return 0.1;
-      return Math.round(val * 4) / 4; // nearest 0.25
+      return Math.round(val * 4) / 4;
     }
 
     qtyMinus.onclick = () => {
@@ -647,10 +680,10 @@
           const row = document.createElement("div");
           row.className = "food-row";
           row.innerHTML = `
-            <span>${f.name} <span style="color:var(--muted);font-size:.9rem;">(${f.serving})</span></span>
-            <span style="color:var(--muted);font-size:.9rem;">
+            <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
+            <span style="color:var(--muted);font-size:.78rem;">
               ${f.calories} kcal · ${f.carbs} C · ${f.protein} P · ${f.fat} F
-              <button class="small secondary" style="margin-left:.4rem;">Add</button>
+              <button class="small secondary" style="margin-left:.35rem;">Add</button>
             </span>
           `;
           row.querySelector("button").onclick = (ev) => {
@@ -675,10 +708,10 @@
           const row = document.createElement("div");
           row.className = "food-row";
           row.innerHTML = `
-            <span>${f.name} <span style="color:var(--muted);font-size:.9rem;">(${f.serving})</span></span>
-            <span style="color:var(--muted);font-size:.9rem;">
+            <span>${f.name} <span style="color:var(--muted);font-size:.78rem;">(${f.serving})</span></span>
+            <span style="color:var(--muted);font-size:.78rem;">
               ${f.calories || "?"} kcal · ${f.carbs || "?"} C · ${f.protein || "?"} P · ${f.fat || "?"} F
-              <button class="small secondary" style="margin-left:.4rem;">Import</button>
+              <button class="small secondary" style="margin-left:.35rem;">Import</button>
             </span>
           `;
           row.querySelector("button").onclick = (ev) => {
@@ -747,9 +780,9 @@
           row.className = "food-row";
           row.innerHTML = `
             <span>[${e.meal}] ${e.name}
-              <span style="color:var(--muted);font-size:.9rem;">(${e.serving} · x ${e.qty})</span>
+              <span style="color:var(--muted);font-size:.78rem;">(${e.serving} · x ${e.qty})</span>
             </span>
-            <span style="color:var(--muted);font-size:.9rem;">
+            <span style="color:var(--muted);font-size:.78rem;">
               ${e.calories} kcal · ${e.carbs} C · ${e.protein} P · ${e.fat} F
               <button class="small danger" data-index="${index}">✕</button>
             </span>
